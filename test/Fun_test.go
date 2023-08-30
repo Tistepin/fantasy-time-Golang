@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/goccy/go-json"
 	"go_dialogue/model"
+	"go_dialogue/utils"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"io"
@@ -63,6 +64,52 @@ func TestItoaji(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	user := &model.Contact{}
+	user := &model.Message{}
 	db.AutoMigrate(user)
+}
+
+func TestJm(t *testing.T) {
+
+	AddFriend(1, 2)
+}
+
+// AddFriend 添加好友   自己的ID  ， 好友的ID
+func AddFriend(userId uint, targetId uint) (int, string) {
+	if targetId == userId {
+		return -1, "不能加自己"
+	}
+	dsn := "root:xu20010502@tcp(127.0.0.1:3306)/fantasytime?charset=utf8mb4&parseTime=True&loc=Local"
+	db, _ := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	contact0 := model.Contact{}
+	db.Where("owner_id =?  and target_id =? and type=1", userId, targetId).Find(&contact0)
+	if contact0.ID != 0 {
+		return -1, "不能重复添加"
+	}
+	// 开启事务
+	tx := db.Begin()
+	//事务一旦开始，不论什么异常最终都会 Rollback
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+	// 创建关系
+	contact := model.Contact{}
+	contact.OwnerId = userId
+	contact.TargetId = targetId
+	contact.Type = 1
+	if err := utils.DB.Create(&contact).Error; err != nil {
+		tx.Rollback()
+		return -1, "添加好友失败"
+	}
+	contact1 := model.Contact{}
+	contact1.OwnerId = targetId
+	contact1.TargetId = userId
+	contact1.Type = 1
+	if err := utils.DB.Create(&contact1).Error; err != nil {
+		tx.Rollback()
+		return -1, "添加好友失败"
+	}
+	tx.Commit()
+	return 0, "添加好友成功"
 }

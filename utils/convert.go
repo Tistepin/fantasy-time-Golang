@@ -57,3 +57,16 @@ func ParamStringSlice(str string) []string {
 func Deserialize(s string, obj interface{}) error {
 	return jsons.UnmarshalFromString(s, obj)
 }
+
+func ParamUInt64Slice(str string) []uint64 {
+	res := make([]uint64, 0)
+	if IsEmptyString(str) {
+		return res
+	}
+
+	if err := Deserialize(str, &res); err != nil {
+		return res
+	}
+
+	return res
+}

@@ -1,6 +1,30 @@
 info:
   contact: {}
 paths:
+  /AddFriend:
+    put:
+      consumes:
+      - application/json
+      description: 添加好友
+      parameters:
+      - description: userId
+        in: query
+        name: userId
+        type: string
+      - description: targetId
+        in: query
+        name: targetId
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: 添加好友
+      tags:
+      - User
   /GetContactStates:
     get:
       consumes:
@@ -20,5 +44,5 @@ paths:
             type: string
       summary: 测试查询用户好友的状态
       tags:
-      - 帖子相关接口
+      - User
 swagger: "2.0"

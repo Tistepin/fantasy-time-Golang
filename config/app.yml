@@ -1,5 +1,5 @@
 mysql:
-  dsn: root:xu20010502@tcp(127.0.0.1:3306)/qqpro?charset=utf8mb4&parseTime=True&loc=Local
+  dsn: root:xu20010502@tcp(127.0.0.1:3306)/fantasytime?charset=utf8mb4&parseTime=True&loc=Local
 redis:
   addr: "127.0.0.1:6379"
   password: "xu20010502"

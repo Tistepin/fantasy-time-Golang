@@ -13,10 +13,10 @@ import (
 **/
 
 type FtUser struct {
-	ID           uint   `gorm:"column:id;primarykey"`
+	ID           uint   `gorm:"column:id;primarykey" json:"id"`
 	UserName     string `gorm:"column:username;unique;NOT NULL" json:"username"`
-	Password     string `gorm:"column:password" json:"passWord"`
-	NickName     string `gorm:"column:nickname" json:"nickName"`
+	Password     string `gorm:"column:password" json:"password"`
+	NickName     string `gorm:"column:nickname" json:"nickname"`
 	Phone        string `gorm:"column:phone" json:"phone"`
 	Email        string `gorm:"column:email" json:"email"`
 	Header       string `gorm:"column:header" json:"header"`
@@ -27,8 +27,8 @@ type FtUser struct {
 	Sign         string `gorm:"column:sign" json:"sign"`
 	SourceType   uint   `gorm:"column:source_type" json:"sourceType"`
 	Status       uint   `gorm:"column:status" json:"status"`
-	CreateTime   string `gorm:"column:create_time" json:"createTime"`
-	EditTime     string `gorm:"column:edit_time" json:"editTime"`
+	CreateTime   MyTime `gorm:"column:create_time" json:"createTime"`
+	EditTime     MyTime `gorm:"column:edit_time" json:"editTime"`
 	DeleteStatus uint   `gorm:"column:delete_status" json:"deleteStatus"`
 }
 
@@ -64,7 +64,7 @@ func (this *FtUser) GetId(FantasyTimetoken string) uint {
 	i := mMap["data"]
 	marshal, _ := json.Marshal(i)
 	//fmt.Println(user)
-	err = json.Unmarshal(marshal, this)
+	err = json.Unmarshal([]byte(marshal), this)
 	if err != nil {
 		fmt.Println(err)
 	}

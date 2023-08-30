@@ -76,3 +76,35 @@ func AddFriend(userId uint, targetId uint) (int, string) {
 	tx.Commit()
 	return 0, "添加好友成功"
 }
+
+func RemoveFriend(userId uint, targetId uint) (int, string) {
+	if targetId == userId {
+		return -1, "不能操作自己"
+	}
+
+	contact0 := Contact{}
+	utils.DB.Where("owner_id =?  and target_id =? and type=1", userId, targetId).Find(&contact0)
+	if contact0.ID == 0 {
+		return -1, "没有关注过"
+	}
+	tx := utils.DB.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+	// 创建关系
+	contact := Contact{}
+	utils.DB.Where("owner_id =?  and target_id =? and type=1", targetId, userId).Find(&contact)
+
+	if err := utils.DB.Exec("delete from ft_contact where owner_id=? and target_id =? and type=1", targetId, userId).Error; err != nil {
+		tx.Rollback()
+		return -1, "添加好友失败"
+	}
+	if err := utils.DB.Exec("delete from ft_contact where id=?", contact0.ID).Error; err != nil {
+		tx.Rollback()
+		return -1, "添加好友失败"
+	}
+	tx.Commit()
+	return 0, "取消关注好友成功"
+}
