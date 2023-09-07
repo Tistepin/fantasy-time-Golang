@@ -20,17 +20,17 @@ import (
 // Message 消息
 type Message struct {
 	gorm.Model
-	UserId     int64  `gorm:"comment:发送者ID;not null"` //发送者
-	TargetId   int64  `gorm:"comment:接受者ID;not null"` //接受者
-	Type       int    `gorm:"comment:发送类型;not null"`  //发送类型  1私聊  2群聊  3心跳
-	Media      int    `gorm:"comment:消息类型;not null"`  //消息类型  1文字  2表情包 3语音 4图片 /表情包
-	Content    string `gorm:"comment:消息内存;"`          //消息内容
-	CreateTime MyTime `gorm:"comment:创建时间;not null"`  //创建时间
-	ReadTime   MyTime `gorm:"comment:读取时间;not null"`  //读取时间
-	Pic        string `gorm:"comment:图片;"`
-	Url        string `gorm:"comment:浏览地址;"`
-	Desc       string `gorm:"comment:备注;"`
-	Amount     int    `gorm:"comment:其他数字统计;"` //其他数字统计
+	UserId     int64     `gorm:"comment:发送者ID;not null"` //发送者
+	TargetId   int64     `gorm:"comment:接受者ID;not null"` //接受者
+	Type       int       `gorm:"comment:发送类型;not null"`  //发送类型  1私聊  2群聊  3心跳
+	Media      int       `gorm:"comment:消息类型;not null"`  //消息类型  1文字  2表情包 3语音 4图片 /表情包
+	Content    string    `gorm:"comment:消息内存;"`          //消息内容
+	CreateTime time.Time `gorm:"comment:创建时间;not null"`  //创建时间
+	ReadTime   time.Time `gorm:"comment:读取时间;not null"`  //读取时间
+	Pic        string    `gorm:"comment:图片;"`
+	Url        string    `gorm:"comment:浏览地址;"`
+	Desc       string    `gorm:"comment:备注;"`
+	Amount     int       `gorm:"comment:其他数字统计;"` //其他数字统计
 }
 
 func (table *Message) TableName() string {

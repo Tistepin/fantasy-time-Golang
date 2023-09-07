@@ -59,7 +59,7 @@ func TestName(t *testing.T) {
 
 func TestItoaji(t *testing.T) {
 	//连接数据库
-	dsn := "root:xu20010502@tcp(127.0.0.1:3306)/fantasytime?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:root@tcp(192.168.153.134:3306)/fantasytime?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)
@@ -112,4 +112,16 @@ func AddFriend(userId uint, targetId uint) (int, string) {
 	}
 	tx.Commit()
 	return 0, "添加好友成功"
+}
+
+func TestGetworks(t *testing.T) {
+	dsn := "root:xu20010502@tcp(127.0.0.1:3306)/fantasytime?charset=utf8mb4&parseTime=True&loc=Local"
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
+	var works []model.Works
+	db.Find(&works)
+	marshal, _ := json.Marshal(works)
+	fmt.Println(string(marshal))
 }

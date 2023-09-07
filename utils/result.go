@@ -53,10 +53,10 @@ func RFail(w http.ResponseWriter, msg string) {
 
 // Rok 返回成功
 func Rok(w http.ResponseWriter, data interface{}, msg string) {
-	R(w, 0, data, msg)
+	R(w, 20000, data, msg)
 }
 
 // RespOKList 返回list Ok
 func RespOKList(w http.ResponseWriter, data interface{}, total interface{}) {
-	RList(w, 0, data, total)
+	RList(w, 20000, data, total)
 }

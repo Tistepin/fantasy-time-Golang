@@ -77,3 +77,7 @@ func AddFriend(r *gin.Context) {
 
 	utils.RFail(r.Writer, s)
 }
+
+func Test(r *gin.Context) {
+	utils.Rok(r.Writer, nil, "")
+}
