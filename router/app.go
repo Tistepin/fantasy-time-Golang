@@ -57,5 +57,6 @@ func Router() *gin.Engine {
 	r.PUT("/AddFriend", service.AddFriend)
 	r.GET("/test", service.Test)
 	r.GET("/getWorks", service.GetWorks)
+	r.GET("/getWorksImages", service.GetWorksImages)
 	return r
 }

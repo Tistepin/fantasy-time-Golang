@@ -1,9 +1,12 @@
 package service
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"go_dialogue/model"
 	"go_dialogue/utils"
+	"io"
+	"os"
 	"strconv"
 )
 
@@ -82,4 +85,64 @@ func GetWorks(r *gin.Context) {
 	db.Count(&count)
 	//marshal, _ := json.Marshal(works)
 	utils.RespOKList(r.Writer, works, count)
+}
+
+func GetWorksImages(r *gin.Context) {
+	getImage(r)
+}
+func getImage(r *gin.Context) {
+	ImageDefaultStatus, _ := r.GetQuery("ImageDefaultStatus")
+	WorksId, b := r.GetQuery("WorksId")
+	worksChapterId, worksChapterIdCheck := r.GetQuery("WorksChapterId")
+	imageId, imageIdCheck := r.GetQuery("ImageId")
+	// 0 不是 1 是
+	Url := ""
+	if a, _ := strconv.Atoi(ImageDefaultStatus); a == 1 {
+		//  查询封面
+		if b {
+			entity := model.WorksDefaultImageEntity{}
+			utils.DB.Where("works_id=?", WorksId).First(&entity)
+			Url = entity.WorksDefaultImage
+		} else {
+			utils.RFail(r.Writer, "没有作品ID")
+		}
+	} else {
+		if worksChapterIdCheck {
+			if imageIdCheck {
+				entity := model.WorksChapterDetailedViewingContentEntity{}
+				utils.DB.Where("works_id=? and works_chapter_id = ? and image_id=? and delete_status=1 and review_status=1", WorksId, worksChapterId, imageId).First(&entity)
+				Url = entity.WorksChapterLocation
+			} else {
+				utils.RFail(r.Writer, "没有作品章节图片ID")
+			}
+		} else {
+			utils.RFail(r.Writer, "没有作品章节ID")
+		}
+	}
+	if Url != "" {
+		file, err := os.Open(Url)
+		if err != nil {
+			fmt.Println("open file err=", err)
+		}
+		defer file.Close()
+
+		// 读取图片文件内容
+		imageData, err := io.ReadAll(file)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		// 从数据库中获取图片数据
+		if err != nil {
+			//http.Error(r, "Failed to retrieve image", http.StatusInternalServerError)
+			return
+		}
+
+		// 将图片数据写入响应
+		r.Header("Content-Type", "image/jpg")
+		r.Writer.Write(imageData)
+	} else {
+		utils.RFail(r.Writer, "没有图片")
+	}
+
 }

@@ -120,8 +120,9 @@ func TestGetworks(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	var works []model.Works
-	db.Find(&works)
-	marshal, _ := json.Marshal(works)
-	fmt.Println(string(marshal))
+	var works model.WorksChapterDetailedViewingContentEntity
+	db.Where("works_id=? and works_chapter_id = ? and image_id=? and delete_status=1 and review_status=1",
+		1, 8, 1).First(&works)
+
+	fmt.Println(works)
 }
