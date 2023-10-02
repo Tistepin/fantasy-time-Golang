@@ -2,6 +2,7 @@ package service
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	"go_dialogue/model"
 	"go_dialogue/utils"
 	"strconv"
@@ -79,5 +80,6 @@ func AddFriend(r *gin.Context) {
 }
 
 func Test(r *gin.Context) {
-	utils.Rok(r.Writer, nil, "")
+	getString := viper.GetString("mysql.dsn")
+	utils.Rok(r.Writer, nil, getString)
 }

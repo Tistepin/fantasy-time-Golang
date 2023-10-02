@@ -78,7 +78,7 @@ func AddFriend(userId uint, targetId uint) (int, string) {
 	if targetId == userId {
 		return -1, "不能加自己"
 	}
-	dsn := "root:xu20010502@tcp(127.0.0.1:3306)/fantasytime?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:xu20010502@tcp(127.0.0.1:3306)/fantasytime?parseTime=true"
 	db, _ := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	contact0 := model.Contact{}
 	db.Where("owner_id =?  and target_id =? and type=1", userId, targetId).Find(&contact0)
@@ -115,7 +115,7 @@ func AddFriend(userId uint, targetId uint) (int, string) {
 }
 
 func TestGetworks(t *testing.T) {
-	dsn := "root:xu20010502@tcp(127.0.0.1:3306)/fantasytime?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:xu20010502@tcp(47.115.224.241:3306)/fantasytime?parseTime=true"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)

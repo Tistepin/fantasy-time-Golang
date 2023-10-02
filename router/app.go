@@ -58,5 +58,22 @@ func Router() *gin.Engine {
 	r.GET("/test", service.Test)
 	r.GET("/getWorks", service.GetWorks)
 	r.GET("/getWorksImages", service.GetWorksImages)
+	//r.GET("/zc", func(context *gin.Context) {
+	//	utils.InitNacos()
+	//})
+	//r.GET("/zx", func(context *gin.Context) {
+	//
+	//	success, err := utils.Client.DeregisterInstance(vo.DeregisterInstanceParam{
+	//		Ip:          "127.0.0.1",
+	//		Port:        8883,
+	//		ServiceName: "go-dialogue",
+	//		Ephemeral:   true,
+	//	})
+	//	if err != nil {
+	//		fmt.Println(err)
+	//	}
+	//	fmt.Println(success)
+	//
+	//})
 	return r
 }

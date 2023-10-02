@@ -1,7 +1,7 @@
 mysql:
-  dsn: root:xu20010502@tcp(127.0.0.1:3306)/fantasytime?charset=utf8mb4&parseTime=True&loc=Local
+  dsn: root:xu20010502@tcp(47.115.224.241:3306)/fantasytime?charset=utf8mb4&parseTime=True&loc=Local
 redis:
-  addr: "127.0.0.1:6379"
+  addr: "47.115.224.241:6379"
   password: "xu20010502"
   DB: 0
   poolSize: 30
@@ -16,7 +16,8 @@ timeout:
 port:
   server: 8883
   udp: 3001
-
+  IP: 47.115.224.241
+#  IP: 127.0.0.1
 nacos:
-  Ip: 127.0.0.1
+  Ip: 47.115.224.241
   Port: 8848

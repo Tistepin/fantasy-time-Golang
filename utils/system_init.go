@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	"github.com/nacos-group/nacos-sdk-go/v2/clients"
+	"github.com/nacos-group/nacos-sdk-go/v2/clients/naming_client"
 	"github.com/nacos-group/nacos-sdk-go/v2/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/v2/vo"
 	"github.com/spf13/viper"
@@ -56,6 +57,8 @@ func InitMysql() {
 	DB = db
 }
 
+var Client naming_client.INamingClient
+
 // 注册nacos 进行服务发现
 func InitNacos() {
 	// 配置nacos的连接配置
@@ -80,21 +83,22 @@ func InitNacos() {
 		ClientConfig:  &cc,
 		ServerConfigs: sc,
 	})
+	Client = client
 	if err != nil {
 		log.Fatal("创建服务发现客户端", err)
 	}
 	client.RegisterInstance(
 		vo.RegisterInstanceParam{
-			Ip:       "10.161.139.216", // 配置自己IP  表示谁都可以访问
-			Port:     viper.GetUint64("port.server"),
-			Weight:   10,
-			Enable:   true, // true表示可以访问 其他服务可以根据nacos访问到这个服务
-			Healthy:  true, // true表示是否健康
-			Metadata: nil,  // 选填
+			Ip:        viper.GetString("port.IP"), // 配置自己IP  表示谁都可以访问
+			Port:      viper.GetUint64("port.server"),
+			Weight:    10,
+			Enable:    true, // true表示可以访问 其他服务可以根据nacos访问到这个服务
+			Healthy:   true, // true表示是否健康
+			Metadata:  nil,  // 选填
+			Ephemeral: true,
 			//ClusterName: "go_dialogue", //集群名称 表示要连接哪个nacos服务
-			ServiceName: "go_dialogue",
+			ServiceName: "go-dialogue",
 			GroupName:   "", // 默认不写为default
-			//Ephemeral:   false,
 		})
 	if err != nil {
 		log.Fatal("创建服务发现客户端", err)

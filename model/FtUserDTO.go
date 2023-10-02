@@ -39,7 +39,7 @@ func (this *FtUser) GetId(FantasyTimetoken string) uint {
 	// 获取客户端
 	client := &http.Client{}
 	// 构建请求
-	req, _ := http.NewRequest("GET", "http://localhost:8081/works/user/getUserEntity", nil)
+	req, _ := http.NewRequest("GET", "http://47.115.224.241:8081/works/user/getUserEntity", nil)
 	// 添加请求头
 	req.Header.Add("FantasyTimetoken", FantasyTimetoken)
 	// 开始请求
